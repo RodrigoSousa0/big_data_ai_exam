@@ -3,9 +3,12 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://student:examen@db:5432/points'
+db_user = os.environ.get('POSTGRES_USER', 'student')
+db_password = os.environ.get('POSTGRES_PASSWORD', 'examen')
+db_host = os.environ.get('DB_HOST', 'db')
+db_name = os.environ.get('POSTGRES_DB', 'points')
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{db_user}:{db_password}@{db_host}:5432/{db_name}'
 db = SQLAlchemy(app)
-
 class Student(db.Model):
     __tablename__ = 'students'
     id = db.Column(db.Integer, primary_key=True)
