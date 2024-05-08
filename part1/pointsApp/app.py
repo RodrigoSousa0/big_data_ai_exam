@@ -26,12 +26,15 @@ def create_student():
     return redirect(url_for('index'))
 
 @app.route('/assign/<int:student_id>', methods=['POST'])
+@app.route('/assign/<int:student_id>', methods=['POST'])
 def assign_grade(student_id):
     grade = int(request.form.get('grade'))
-    student = db.session.get(Student, student_id)
-    student.grade = grade
-    db.session.commit()
+    student = Student.query.get(student_id)
+    if student:
+        student.grade = grade
+        db.session.commit()
     return redirect(url_for('index'))
+
 
 if __name__ == '__main__':
     # Within the application context
@@ -40,4 +43,4 @@ if __name__ == '__main__':
         db.create_all()
 
     # Run the application
-    app.run(debug=True, host='127.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000)
